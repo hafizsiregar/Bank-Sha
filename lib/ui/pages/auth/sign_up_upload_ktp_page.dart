@@ -1,14 +1,32 @@
+import 'dart:io';
 import 'package:bank_sha/models/sign_up_form_model.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../shared/shared_methods.dart';
 import '../../../shared/theme.dart';
 import '../../widgets/buttons.dart';
 
-class SignUpUploadKtpPage extends StatelessWidget {
+class SignUpUploadKtpPage extends StatefulWidget {
   final SignUpFormModel data;
   const SignUpUploadKtpPage({
     required this.data,
     super.key
   });
+
+  @override
+  State<SignUpUploadKtpPage> createState() => _SignUpUploadKtpPageState();
+}
+
+class _SignUpUploadKtpPageState extends State<SignUpUploadKtpPage> {
+  
+  XFile? selectedImage;
+
+  bool validete() {
+    if(selectedImage == null) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,28 +60,35 @@ class SignUpUploadKtpPage extends StatelessWidget {
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: lightBackgroundColor,
-                    ),
-                    child: Center(
-                      child: Image.asset('assets/ic_upload.png'),
+                  GestureDetector(
+                    onTap: () async {
+                      final image = await selectImages();
+                      setState(() {
+                        selectedImage = image;
+                      });
+                    },
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: lightBackgroundColor,
+                        image: selectedImage == null
+                        ? null
+                        : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(
+                          File(selectedImage!.path),
+                        ),
+                      ),
+                      ),
+                      child: selectedImage != null ?
+                      null
+                      : Center(
+                        child: Image.asset('assets/ic_upload.png'),
+                      ),
                     ),
                   ),
-                  // Container(
-                  //   height: 120,
-                  //   width: 120,
-                  //   decoration: BoxDecoration(
-                  //     shape: BoxShape.circle,
-                  //     image: DecorationImage(
-                  //       fit: BoxFit.cover,
-                  //       image: AssetImage('assets/img_profile.png')
-                  //     )
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 16,
                   ),
@@ -77,7 +102,13 @@ class SignUpUploadKtpPage extends StatelessWidget {
                   ),
                   CustomFilleButton(
                     title: 'Continue',
-                    onPressed: () {},
+                    onPressed: () {
+                      if(validete()) {
+                        
+                      } else {
+                        showCustomSnackbar(context, 'Gambar Tidak Boleh Kosong');
+                      }
+                    },
                   ),
                 ],
               ),
