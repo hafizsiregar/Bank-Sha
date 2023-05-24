@@ -1,7 +1,9 @@
+import 'package:bank_sha/blocs/auth/auth_bloc.dart';
 import 'package:bank_sha/shared/theme.dart';
 import 'package:flutter/material.dart';
 import '../../../shared/shared_methods.dart';
 import '../../widgets/buttons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PinPage extends StatefulWidget {
   const PinPage({super.key});
@@ -11,33 +13,47 @@ class PinPage extends StatefulWidget {
 }
 
 class _PinPageState extends State<PinPage> {
-
   final TextEditingController controller = TextEditingController(text: '');
+  String pin = '';
+  bool isError = false;
 
   addPin(String number) {
-    if(controller.text.length < 6) {
+    if (controller.text.length < 6) {
       setState(() {
         controller.text = controller.text + number;
       });
     }
 
-    if(controller.text.length == 6) {
-      if(controller.text == '123123') {
-      Navigator.pop(context, true);
-    } else {
-      showCustomSnackbar(
-        context,
-        'PIN yang anda masukkan salah. Silahkan coba lagi!'
-      );
-    }
+    if (controller.text.length == 6) {
+      if (controller.text == pin) {
+        Navigator.pop(context, true);
+      } else {
+        setState(() {
+          isError = true;
+        });
+        showCustomSnackbar(
+            context, 'PIN yang anda masukkan salah. Silahkan coba lagi!');
+      }
     }
   }
 
   deletePin() {
-    if(controller.text.isNotEmpty) {
+    if (controller.text.isNotEmpty) {
       setState(() {
-        controller.text = controller.text.substring(0, controller.text.length -1);
+        isError = false;
+        controller.text =
+            controller.text.substring(0, controller.text.length - 1);
       });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final authState = context.read<AuthBloc>().state;
+
+    if (authState is AuthSuccess) {
+      pin = authState.user.pin!;
     }
   }
 
@@ -72,6 +88,7 @@ class _PinPageState extends State<PinPage> {
                   obscuringCharacter: '*',
                   enabled: false,
                   style: whiteTextStyle.copyWith(
+                    color: isError ? redColor : whiteColor,
                     fontSize: 36,
                     fontWeight: medium,
                     letterSpacing: 16,
