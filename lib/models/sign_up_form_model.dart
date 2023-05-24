@@ -42,5 +42,4 @@ class SignUpFormModel {
         profilePicture: profilePicture ?? this.profilePicture,
         ktp: ktp ?? this.ktp,
       );
-
 }
