@@ -98,14 +98,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             CustomFilleButton(
                               title: 'Get Started',
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(context, '/sign-up', (route) => false);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/sign-up', (route) => false);
                               },
                             ),
                             const SizedBox(height: 20),
                             CustomTextWidget(
                               title: 'Sign In',
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/sign-in', (route) => false);
                               },
                             ),
                           ],
