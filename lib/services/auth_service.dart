@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bank_sha/models/sign_in_form_model.dart';
 import 'package:bank_sha/models/sign_up_form_model.dart';
 import 'package:bank_sha/models/user_model.dart';
@@ -50,6 +49,26 @@ class AuthService {
         user = user.copyWith(password: data.password);
         await storeCredentialToLocal(user);
         return user;
+      } else {
+        throw jsonDecode(res.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      final token = await getToken();
+      final res = await http.post(
+        Uri.parse('$baseUrl/logout'),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      if (res.statusCode == 200) {
+        await clearLocalStorage();
       } else {
         throw jsonDecode(res.body)['message'];
       }
