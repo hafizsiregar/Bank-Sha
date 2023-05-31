@@ -149,7 +149,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             ),
                             const Spacer(),
                             CustomFilleButton(
-                              width: 150,
+                              width: 140,
                               title: 'Continue',
                               onPressed: () {
                                 carouselController.nextPage();

@@ -6,7 +6,6 @@ import 'package:bank_sha/ui/widgets/home_tips_item.dart';
 import 'package:bank_sha/ui/widgets/home_user_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../shared/shared_methods.dart';
 
 class HomePage extends StatelessWidget {
@@ -403,7 +402,7 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         color: whiteColor,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         clipBehavior: Clip.antiAlias,
         notchMargin: 6,
         child: BottomNavigationBar(
